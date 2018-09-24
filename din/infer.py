@@ -34,4 +34,6 @@ with tf.Session() as sess:
 
 t2=time.time()
 
-print ("Total Eval Time: " + str(t2-t1))
+f = open('inference_time.txt','a')
+f.write(str(t2-t1)+"\n")
+f.close()
