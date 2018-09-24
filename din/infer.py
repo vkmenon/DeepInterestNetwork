@@ -11,6 +11,9 @@ from model import Model
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--bs",type=int)
+parser.add_argument("--intra",type=int,default=40)
+parser.add_argument("--inter",type=int,default=40)
+
 args = parser.parse_args()
 
 
@@ -25,9 +28,13 @@ model = Model(user_count, item_count, cate_count, cate_list)
 
 test_batch_size = args.bs
 
+cpu_config = tf.ConfigProto()
+cpu_config.intra_op_parallelism_threads = args.intra
+cpu_config.inter_op_parallelism_threads = args.inter
+
 t1=time.time()
 
-with tf.Session() as sess:
+with tf.Session(config=cpu_config) as sess:
     model.restore(sess,'save_path/ckpt')
     for k, uij in DataInputTest(test_set, test_batch_size):
         model.test(sess,uij)
