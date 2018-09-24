@@ -1,5 +1,5 @@
 """
-Usage: python infer.py --bs=<batch_size>    
+Usage: python infer.py --bs=<batch_size> --intra=<num_intra_threads> --inter=<num_inter_threads>  
 """
 
 import argparse
@@ -11,8 +11,8 @@ from model import Model
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--bs",type=int)
-parser.add_argument("--intra",type=int,default=40)
-parser.add_argument("--inter",type=int,default=40)
+parser.add_argument("--intra",type=int,default=0)
+parser.add_argument("--inter",type=int,default=0)
 
 args = parser.parse_args()
 
@@ -31,6 +31,7 @@ test_batch_size = args.bs
 cpu_config = tf.ConfigProto()
 cpu_config.intra_op_parallelism_threads = args.intra
 cpu_config.inter_op_parallelism_threads = args.inter
+
 
 t1=time.time()
 
