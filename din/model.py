@@ -149,11 +149,22 @@ class Model(object):
         })
     return u_auc, socre_p_and_n
 
-  def test(self, sess, uid, hist_i, sl):
+  def test_all(self, sess, uid, hist_i, sl):
     return sess.run(self.logits_all, feed_dict={
-        self.u: uid,
-        self.hist_i: hist_i,
-        self.sl: sl,
+        self.u: uij[0],
+        self.i: uij[1],
+        self.j: uij[2],
+        self.hist_i: uij[3],
+        self.sl: uij[4],
+        })
+
+  def test(self, sess, uij):
+    return sess.run(self.logits, feed_dict={
+        self.u: uij[0],
+        self.i: uij[1],
+        self.j: uij[2],
+        self.hist_i: uij[3],
+        self.sl: uij[4],
         })
 
   def save(self, sess, path):
